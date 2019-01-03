@@ -26,7 +26,7 @@ let fixtures = [(
   [%str
     let getIntParam req param => {
       let module Let_syntax = Monads.Option;
-      [%bind let value = Js.Dict.get (Request.query req) param];
+      [%await let value = Js.Dict.get (Request.query req) param];
       [%map let float = Js.Json.decodeNumber value];
       int_of_float float
     };
@@ -34,7 +34,7 @@ let fixtures = [(
   [%str
     let getIntParam req param => {
       let module Let_syntax = Monads.Option;
-      Let_syntax.bind (Js.Dict.get (Request.query req) param) f::(fun value => {
+      Let_syntax.await (Js.Dict.get (Request.query req) param) f::(fun value => {
         Let_syntax.map (Js.Json.decodeNumber value) f::(fun float => {
           int_of_float float
         })
@@ -45,7 +45,7 @@ let fixtures = [(
   [%str
     let full2 db uid => {
       let module Let_syntax = Db.Async;
-      [%consume let res = dump db uid];
+      [%await let res = dump db uid];
       switch res {
         | Ok data => Js.log data
         | Error err => Js.log ("Failed" ^ err)
@@ -54,7 +54,7 @@ let fixtures = [(
   ], [%str
     let full2 db uid => {
       let module Let_syntax = Db.Async;
-      Let_syntax.consume (dump db uid) f::(fun res => {
+      Let_syntax.await (dump db uid) f::(fun res => {
       switch res {
         | Ok data => Js.log data
         | Error err => Js.log ("Failed" ^ err)

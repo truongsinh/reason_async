@@ -12,7 +12,7 @@ let doSomething = () => {
   [%await let x = somethingPromisy
   and y = anotherPromise];
   /* ... */
-  [%awaitWrap let z = getFileContents()];
+  [%await let z = getFileContents()];
   x + y + z
 };
 ```
